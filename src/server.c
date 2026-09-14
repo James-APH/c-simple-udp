@@ -20,7 +20,6 @@ int main() {
   char response[BUFFER_SIZE];
   ssize_t status = -1;
   AddressInfo address_info;
-  struct sockaddr server_address;
   socklen_t len = 0;
   int server_socket = -1;
 
@@ -36,11 +35,10 @@ int main() {
       .sin_port = htons(PORT_NUMBER),
       .sin_addr.s_addr = htonl(INADDR_ANY),
   };
-  server_address = address_info._sockaddr;
 
   // Binding server socket to server address
-  if ((status = bind(server_socket, &server_address, sizeof(server_address))) <
-      0) {
+  if ((status = bind(server_socket, &address_info._sockaddr,
+                     sizeof(address_info._sockaddr))) < 0) {
     printf("Error, failed to bind socket.");
     close(server_socket);
     exit(EXIT_FAILURE);

@@ -19,7 +19,6 @@ int main() {
   // Declaring Variables:
   const char *message = "Hello Server";
   AddressInfo address_info;
-  struct sockaddr client_address;
   ssize_t status = -1;
   int client_socket = -1;
 
@@ -35,11 +34,11 @@ int main() {
       .sin_port = htons(PORT_NUMBER),
       .sin_addr.s_addr = inet_addr("127.0.0.1"),
   };
-  client_address = address_info._sockaddr;
 
   // Sending message to the server
   if ((status = sendto(client_socket, message, strlen(message), NO_FLAGS,
-                       &client_address, sizeof(client_address))) == -1) {
+                       &address_info._sockaddr,
+                       sizeof(address_info._sockaddr))) == -1) {
     printf("Error, failed to send message");
     close(client_socket);
     exit(EXIT_FAILURE);
